@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAAD — API Design Studio</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Deshabilitar menú contextual en build de producción
+      if (window.location.protocol === 'tauri:' || window.location.protocol === 'asset:' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, { capture: true });
+        window.addEventListener('contextmenu', function(e) { e.preventDefault(); }, { capture: true });
+      }
+    </script>
+  </body>
+</html>

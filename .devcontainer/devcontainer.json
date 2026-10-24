@@ -1,0 +1,38 @@
+{
+  "name": "CAAD Dev Environment (Tauri 2 + Rust + Bun)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}",
+    "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
+    "WEBKIT_DISABLE_COMPOSITING_MODE": "1"
+  },
+  "mounts": [
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+    "source=/dev/dri,target=/dev/dri,type=bind"
+  ],
+  "runArgs": [
+    "--ipc=host"
+  ],
+  "forwardPorts": [
+    1420
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "rust-analyzer.check.command": "clippy",
+        "rust-analyzer.cargo.buildScripts.enable": true,
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "tauri-apps.tauri-vscode",
+        "oven-sh.bun-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}

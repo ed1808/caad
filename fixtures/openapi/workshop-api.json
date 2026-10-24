@@ -1,0 +1,224 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Workshop API",
+    "version": "1.0.0",
+    "summary": "API de gestión de taller mecánico y órdenes de trabajo",
+    "description": "Especificación representativa de OpenAPI 3.1.0 para pruebas de CAAD (Hito 0)."
+  },
+  "servers": [
+    {
+      "url": "https://api.workshop.local/v1",
+      "description": "Servidor local de desarrollo"
+    }
+  ],
+  "paths": {
+    "/vehicles/{vehicleId}": {
+      "get": {
+        "operationId": "getVehicleById",
+        "summary": "Obtener vehículo por ID",
+        "description": "Devuelve la información detallada de un vehículo registrado.",
+        "tags": [
+          "Vehicles"
+        ],
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "description": "Identificador único del vehículo",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehículo encontrado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vehicle"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehículo no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/work-orders": {
+      "post": {
+        "operationId": "createWorkOrder",
+        "summary": "Crear orden de trabajo",
+        "description": "Registra una nueva orden de servicio asociada a un vehículo.",
+        "tags": [
+          "WorkOrders"
+        ],
+        "requestBody": {
+          "description": "Datos de la nueva orden de trabajo",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkOrderCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Orden de trabajo creada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vehicle": {
+        "type": "object",
+        "required": [
+          "id",
+          "licensePlate",
+          "make",
+          "modelYear"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único del vehículo"
+          },
+          "licensePlate": {
+            "type": "string",
+            "description": "Matrícula o placa del vehículo",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "make": {
+            "type": "string",
+            "description": "Marca del fabricante"
+          },
+          "modelYear": {
+            "type": "integer",
+            "description": "Año del modelo",
+            "minimum": 1900,
+            "maximum": 2100
+          }
+        }
+      },
+      "WorkOrderCreate": {
+        "type": "object",
+        "required": [
+          "vehicleId",
+          "description"
+        ],
+        "properties": {
+          "vehicleId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID del vehículo asociado"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detalle del trabajo o falla reportada"
+          },
+          "estimatedHours": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Horas estimadas de trabajo (admite nulo en OAS 3.1)",
+            "minimum": 0
+          }
+        }
+      },
+      "WorkOrder": {
+        "type": "object",
+        "required": [
+          "id",
+          "vehicleId",
+          "description",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único de la orden"
+          },
+          "vehicleId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID del vehículo"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detalle del trabajo"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "IN_PROGRESS",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          },
+          "estimatedHours": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Código interno o estándar de error"
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje legible del error"
+          }
+        }
+      }
+    }
+  }
+}

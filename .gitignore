@@ -1,0 +1,22 @@
+# Rust & Cargo
+target/
+src-tauri/target/
+**/*.rs.bk
+Cargo.lock
+
+# Node / Bun
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDEs & System
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+*.log
