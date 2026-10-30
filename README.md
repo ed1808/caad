@@ -65,6 +65,7 @@ Para garantizar reproducibilidad sin alterar el sistema operativo anfitrión, el
 Se incluye el script `./scripts/dev.sh` para ejecutar comandos directamente en el contenedor de desarrollo:
 
 ### 1. Frontend
+
 ```bash
 # Instalar dependencias
 ./scripts/dev.sh bun install
@@ -77,6 +78,7 @@ Se incluye el script `./scripts/dev.sh` para ejecutar comandos directamente en e
 ```
 
 ### 2. Backend (Rust)
+
 ```bash
 # Verificación de compilación de Rust
 ./scripts/dev.sh cargo check --manifest-path src-tauri/Cargo.toml
@@ -92,6 +94,7 @@ Se incluye el script `./scripts/dev.sh` para ejecutar comandos directamente en e
 ```
 
 ### 3. Ejecución de la Aplicación de Escritorio
+
 ```bash
 # Modo desarrollo con recarga rápida (HMR y Tauri Window)
 ./scripts/dev.sh bun run tauri dev
